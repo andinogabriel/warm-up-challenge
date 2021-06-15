@@ -21,8 +21,10 @@ public class PostEntity implements Serializable {
     @GeneratedValue
     private long id;
 
+    @Column(nullable = false)
     private String title;
 
+    @Column(columnDefinition = "TEXT")
     private String body;
 
     private String image;
