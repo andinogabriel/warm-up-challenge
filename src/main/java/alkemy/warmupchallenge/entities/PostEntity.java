@@ -1,6 +1,6 @@
 package alkemy.warmupchallenge.entities;
 
-import lombok.AllArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Entity(name = "posts")
 @EntityListeners(AuditingEntityListener.class)
-@Getter @Setter @AllArgsConstructor
+@Getter @Setter
 public class PostEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -30,6 +30,7 @@ public class PostEntity implements Serializable {
     private String image;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = {"posts", "handler","hibernateLazyInitializer"}, allowSetters = true)
     @JoinColumn(name = "category_id")
     private CategoryEntity category;
 
@@ -37,6 +38,7 @@ public class PostEntity implements Serializable {
     private Date creationDate;
 
     @ManyToOne
+    @JsonIgnoreProperties(value = {"posts", "handler","hibernateLazyInitializer"}, allowSetters = true)
     @JoinColumn(name = "user_id")
     private UserEntity user;
 

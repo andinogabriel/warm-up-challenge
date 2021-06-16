@@ -2,6 +2,7 @@ package alkemy.warmupchallenge.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -9,7 +10,7 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity(name = "categories")
-@Getter @Setter @AllArgsConstructor
+@Getter @Setter @NoArgsConstructor
 public class CategoryEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
