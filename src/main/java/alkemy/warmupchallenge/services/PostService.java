@@ -9,6 +9,7 @@ import alkemy.warmupchallenge.entities.UserEntity;
 import alkemy.warmupchallenge.repositories.CategoryRepository;
 import alkemy.warmupchallenge.repositories.PostRepository;
 import alkemy.warmupchallenge.repositories.UserRepository;
+import alkemy.warmupchallenge.utils.BucketName;
 import alkemy.warmupchallenge.utils.PatchHelper;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -18,8 +19,13 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.json.JsonPatch;
+import java.io.IOException;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -35,6 +41,12 @@ public class PostService {
     UserRepository userRepository;
 
     @Autowired
+    UploadImageService imageService;
+
+    @Autowired
+    FileStore fileStore;
+
+    @Autowired
     ModelMapper mapper;
 
     @Autowired
@@ -44,12 +56,12 @@ public class PostService {
         CategoryEntity categoryEntity = getCategory(postCreationDto.getCategory());
         UserEntity userEntity = userRepository.findByEmail(postCreationDto.getUser()).get();
 
-        PostEntity postEntity = new PostEntity();
-        postEntity.setTitle(postCreationDto.getTitle());
-        postEntity.setBody(postCreationDto.getBody());
-        postEntity.setCategory(categoryEntity);
-        postEntity.setUser(userEntity);
-        postEntity.setImage(postCreationDto.getImage());
+        PostEntity postEntity = PostEntity.builder()
+                .title(postCreationDto.getTitle())
+                .body(postCreationDto.getBody())
+                .category(categoryEntity)
+                .user(userEntity)
+                .build();
 
         return mapper.map(postRepository.save(postEntity), PostDto.class);
     }
@@ -68,6 +80,10 @@ public class PostService {
         postRepository.delete(postEntity);
     }
 
+    public PostDto getPostById(long id) {
+        return mapper.map(getPostById(id), PostDto.class);
+    }
+
     public Page<PostDto> getAllPosts(int page, int limit, String sortBy, String sortDir) {
         if (page > 0) {
             page = page - 1;
@@ -78,7 +94,7 @@ public class PostService {
                 sortDir.equalsIgnoreCase("asc") ? Sort.by(sortBy).ascending() : Sort.by(sortBy).descending()
         );
 
-        Page<PostToShowDto> postEntities = postRepository.findAllByOrderByCreationDate(pageable);
+        Page<PostToShowDto> postEntities = postRepository.findAllProjectedBy(pageable);
         return mapper.map(postEntities, Page.class);
     }
 
@@ -126,6 +142,39 @@ public class PostService {
 
         Page<PostToShowDto> postEntities = postRepository.findByTitleContainingAndCategory(pageable, title, categoryEntity);
         return mapper.map(postEntities, Page.class);
+    }
+
+    public void uploadPostImage(long id, MultipartFile file) {
+        //1. Check if image isn't empty
+        imageService.fileIsEmpty(file);
+
+        //2. Check if the file is a valid image
+        imageService.isAnImage(file);
+
+        //3. Check if character exists in the DB
+        PostEntity postEntity = getPost(id);
+
+        //4. Save file metadata
+        Map<String, String> metadata = imageService.extractMetadata(file);
+
+        //5. Store the image in s3 and update Character image link with the image link from s3
+        //Path -> bucket name + folder name, the folder name gonna be equal to character id - character name
+        String path = String.format("%s/%s", BucketName.ITEM_IMAGE.getBucketName(), postEntity.getId());
+        String filename = String.format("%s-%s", file.getOriginalFilename(), UUID.randomUUID());
+
+        try {
+            fileStore.save(path, filename, Optional.of(metadata), file.getInputStream());
+            postEntity.setImageLink(filename);
+            postRepository.save(postEntity);
+        } catch (IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    public byte[] downloadPostImage(long id) {
+        PostEntity postEntity = getPost(id);
+        String path = String.format("%s/%s", BucketName.ITEM_IMAGE.getBucketName(), postEntity.getId());
+        return fileStore.download(path, postEntity.getImageLink());
     }
 
 

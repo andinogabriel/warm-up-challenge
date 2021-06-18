@@ -38,14 +38,12 @@ public class UserService implements UserDetailsService {
     }
 
     public UserDto createUser(UserDto userToCreate) {
-        if(!userRepository.findByEmail(userToCreate.getEmail()).isPresent()) {
-            UserEntity userEntity = new UserEntity();
-            userEntity.setEmail(userToCreate.getEmail());
-            userEntity.setEncryptedPassword(bCryptPasswordEncoder.encode(userToCreate.getPassword()));
-            return mapper.map(userRepository.save(userEntity), UserDto.class);
-        } else {
-            throw new RuntimeException("Email is already registered.");
-        }
+        if(userRepository.findByEmail(userToCreate.getEmail()).isPresent()) throw new RuntimeException("Email is already registered.");
+        UserEntity userEntity = UserEntity.builder()
+                .email(userToCreate.getEmail())
+                .encryptedPassword(bCryptPasswordEncoder.encode(userToCreate.getPassword()))
+                .build();
+        return mapper.map(userRepository.save(userEntity), UserDto.class);
     }
 
     public UserDto updateUserDto(long id, UserDto userToUpdate) {
@@ -63,7 +61,7 @@ public class UserService implements UserDetailsService {
         return mapper.map(getUserById(id), UserDto.class);
     }
 
-    private UserEntity getUserById(long id) {
+    public UserEntity getUserById(long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User doesn't exist."));
     }
