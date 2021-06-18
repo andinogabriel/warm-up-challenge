@@ -11,7 +11,8 @@ public class PostResponse {
     private long id;
     private String title;
     private String body;
-    private String image;
+    private String imageLink;
+    private boolean deleted;
     private CategoryResponse category;
     private Date creationDate;
     private UserResponse user;

@@ -15,7 +15,7 @@ public interface PostRepository extends JpaRepository<PostEntity, Long> {
 
     Optional<PostEntity> findById(long id);
 
-    Page<PostToShowDto> findAllByOrderByCreationDate(Pageable pageable);
+    Page<PostToShowDto> findAllProjectedBy(Pageable pageable);
 
     Page<PostToShowDto> findByTitleContaining(Pageable pageable, String title);
 

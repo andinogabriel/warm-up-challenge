@@ -25,12 +25,13 @@ public class PostDto implements Serializable {
     @NotBlank(message = "The post body is required.")
     private String body;
 
-    private String image;
+    private String imageLink;
 
     @JsonIgnoreProperties(value = {"posts", "handler","hibernateLazyInitializer"}, allowSetters = true)
     @NotNull
     private CategoryDto category;
 
+    private boolean deleted;
     private Date creationDate;
     private UserDto user;
 

@@ -6,7 +6,7 @@ public interface PostToShowDto {
 
     long getId();
     String getTitle();
-    String getImage();
+    String getImageLink();
     CategoryDto getCategory();
     Date getCreationDate();
 

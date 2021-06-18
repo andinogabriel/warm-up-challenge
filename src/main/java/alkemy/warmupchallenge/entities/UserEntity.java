@@ -1,7 +1,6 @@
 package alkemy.warmupchallenge.entities;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -9,6 +8,7 @@ import java.util.List;
 
 @Entity(name = "users")
 @Getter @Setter
+@NoArgsConstructor
 public class UserEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -26,4 +26,9 @@ public class UserEntity implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
     private List<PostEntity> posts;
 
+    @Builder
+    public UserEntity(String email, String encryptedPassword) {
+        this.email = email;
+        this.encryptedPassword = encryptedPassword;
+    }
 }

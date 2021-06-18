@@ -14,7 +14,7 @@ public class PostCreationDto implements Serializable {
     private long id;
     private String title;
     private String body;
-    private String image;
+    private String imageLink;
     private long category;
     private Date creationDate;
     private String user;

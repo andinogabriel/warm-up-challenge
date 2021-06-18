@@ -20,7 +20,7 @@ public class PostRequest {
     @NotBlank(message = "The post body is required.")
     private String body;
 
-    private String image;
+    private String imageLink;
 
     @NotNull(message = "Post category is required.")
     private long category;
