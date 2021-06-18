@@ -1,6 +1,7 @@
 package alkemy.warmupchallenge.security;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -12,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import alkemy.warmupchallenge.models.requests.UserLoginRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -67,6 +69,23 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         response.addHeader("Access-Control-Expose-headers", "Authorization");
         //Agregamos un header a la response
         response.addHeader(SecurityConstants.HEADER_STRING, SecurityConstants.TOKEN_PREFIX + token);
+    }
+
+    @Override
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse res, AuthenticationException failed) throws IOException, ServletException {
+        res.addHeader("Access-Control-Allow-Origin", "*");
+        res.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        ObjectMapper mapper = new ObjectMapper();
+        ObjectNode message = mapper.createObjectNode();
+        message.put("success", false);
+        message.put("message", "Invalid credentials");
+        String json = mapper.writerWithDefaultPrettyPrinter().writeValueAsString(message);
+
+        PrintWriter out = res.getWriter();
+        res.setContentType("application/json");
+        res.setCharacterEncoding("UTF-8");
+        out.print(json);
+        out.flush();
     }
 
 
