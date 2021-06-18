@@ -1,0 +1,411 @@
+{
+	"info": {
+		"_postman_id": "e0df44ee-06cd-4e05-9e5a-a8998f29eb37",
+		"name": "Warm-up-challenge",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "POST - Sign up user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"probando2@gmail.com\",\r\n    \"password\": \"123456789\",\r\n    \"matchingPassword\": \"123456789\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/auth/sign_up",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"sign_up"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST - Login user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"probando1@gmail.com\",\r\n    \"password\": \"12345678\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Posts",
+			"item": [
+				{
+					"name": "POST - Create a new post",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcm9iYW5kbzJAZ21haWwuY29tIiwiaWF0IjoxNjIzOTc5NTg0LCJleHAiOjE2MjQwNjU5ODR9.ebrYs77zzSQii3BqCvz2wQEiTaNm_Ke62B00HqKz-GDVU_jXEAgsBW3NSsrdXOtEthM5kN6AiMsVoMlp8-dyGw",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Los videojuegos como ocio\",\r\n    \"body\": \"Hoy hablaremos sobre como ha crecido el negocio de los videojuegos a nivel mundial.\",\r\n    \"category\": 2\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/posts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Get posts by title",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcm9iYW5kbzFAZ21haWwuY29tIiwiaWF0IjoxNjIzNzk3NDgxLCJleHAiOjE2MjM4ODM4ODF9.f5SIsd5-Kljob9RtgFPRwilxH3K8nHjGvvkajJLxDoGhufJ9HLSRD_hLM2oIoCdBY_hJZlrEyQ_dQkciMrtT1g",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/posts?category=2",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"posts"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "2"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PATCH - Update a post",
+					"request": {
+						"method": "PATCH",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcm9iYW5kbzFAZ21haWwuY29tIiwiaWF0IjoxNjI0MDUwMDA2LCJleHAiOjE2MjQxMzY0MDZ9.hePZSXhOWfG8kgvd4EhE22rj_lPaF6_E7Pj9hUlZQ4XMv8Vd1HamyNvd3rJvNe5V3CAzkbOl6ig_u06dn1vxag",
+								"type": "text"
+							},
+							{
+								"key": "Content-Type",
+								"value": "application/json-patch+json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "[\r\n    {\"op\":\"replace\",\"path\":\"/title\",\"value\":\"Segundo post sobre musica Argentina\"}\r\n]",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/posts/13",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"posts",
+								"13"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Get all posts",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcm9iYW5kbzFAZ21haWwuY29tIiwiaWF0IjoxNjI0MDUwMDA2LCJleHAiOjE2MjQxMzY0MDZ9.hePZSXhOWfG8kgvd4EhE22rj_lPaF6_E7Pj9hUlZQ4XMv8Vd1HamyNvd3rJvNe5V3CAzkbOl6ig_u06dn1vxag",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/posts?sortBy=category&sortDir=asc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"posts"
+							],
+							"query": [
+								{
+									"key": "sortBy",
+									"value": "category"
+								},
+								{
+									"key": "sortDir",
+									"value": "asc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Get posts by category",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcm9iYW5kbzFAZ21haWwuY29tIiwiaWF0IjoxNjIzNzk3NDgxLCJleHAiOjE2MjM4ODM4ODF9.f5SIsd5-Kljob9RtgFPRwilxH3K8nHjGvvkajJLxDoGhufJ9HLSRD_hLM2oIoCdBY_hJZlrEyQ_dQkciMrtT1g",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/posts?category=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"posts"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Get posts by title",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcm9iYW5kbzFAZ21haWwuY29tIiwiaWF0IjoxNjIzNzk3NDgxLCJleHAiOjE2MjM4ODM4ODF9.f5SIsd5-Kljob9RtgFPRwilxH3K8nHjGvvkajJLxDoGhufJ9HLSRD_hLM2oIoCdBY_hJZlrEyQ_dQkciMrtT1g",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/posts?title=basquet",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"posts"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "basquet"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET - Get posts by title and category",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcm9iYW5kbzFAZ21haWwuY29tIiwiaWF0IjoxNjIzNzk3NDgxLCJleHAiOjE2MjM4ODM4ODF9.f5SIsd5-Kljob9RtgFPRwilxH3K8nHjGvvkajJLxDoGhufJ9HLSRD_hLM2oIoCdBY_hJZlrEyQ_dQkciMrtT1g",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/posts?title=basquet&category=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"posts"
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "basquet"
+								},
+								{
+									"key": "category",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE - Delete post",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcm9iYW5kbzFAZ21haWwuY29tIiwiaWF0IjoxNjIzNzk3NDgxLCJleHAiOjE2MjM4ODM4ODF9.f5SIsd5-Kljob9RtgFPRwilxH3K8nHjGvvkajJLxDoGhufJ9HLSRD_hLM2oIoCdBY_hJZlrEyQ_dQkciMrtT1g",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "http://localhost:8081/api/v1/posts/8",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"posts",
+								"8"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "POST - Upload post image",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJwcm9iYW5kbzFAZ21haWwuY29tIiwiaWF0IjoxNjIzOTQxNTEzLCJleHAiOjE2MjQwMjc5MTN9.DOo7ItDoVO3uR4n9fJ_vn-tLBg0IlA08v-7gliKLazgD8LYFKurBx40Re6GEPwXslsQvVIS6AaT-9EYoXm8mkg",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": "/C:/Users/gabri/Desktop/asdasdasd.jpg"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:8081/api/v1/posts/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8081",
+							"path": [
+								"api",
+								"v1",
+								"posts",
+								"10"
+							],
+							"query": [
+								{
+									"key": "",
+									"value": null,
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
